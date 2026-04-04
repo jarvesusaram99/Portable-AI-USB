@@ -34,7 +34,7 @@ if ((Test-Path $ModelDest) -and (Get-Item $ModelDest).length -gt 5000000000) {
     Write-Host "      Model already downloaded! Skipping..." -ForegroundColor Green
 } else {
     Write-Host "      This is the biggest download. Please be patient!" -ForegroundColor Magenta
-    curl.exe -L --progress-bar $ModelURL -o $ModelDest
+    curl.exe -L --ssl-no-revoke --progress-bar $ModelURL -o $ModelDest
     Write-Host "      Model Download Complete!" -ForegroundColor Green
 }
 
@@ -62,7 +62,7 @@ $OllamaDest = "$USB_Drive\ollama\ollama-windows-amd64.zip"
 if (Test-Path "$USB_Drive\ollama\ollama.exe") {
     Write-Host "      Ollama already installed! Skipping..." -ForegroundColor Green
 } else {
-    curl.exe -L --progress-bar $OllamaURL -o $OllamaDest
+    curl.exe -L --ssl-no-revoke --progress-bar $OllamaURL -o $OllamaDest
     Write-Host "      Extracting Ollama..." -ForegroundColor Yellow
     Expand-Archive -Path $OllamaDest -DestinationPath "$USB_Drive\ollama" -Force
     Remove-Item $OllamaDest -Force
@@ -84,7 +84,7 @@ if (Test-Path "$USB_Drive\anythingllm\AnythingLLM.exe") {
     # Download the installer
     if (-Not (Test-Path $InstallerDest) -or (Get-Item $InstallerDest).length -lt 10000000) {
         Write-Host "      Downloading installer..." -ForegroundColor Magenta
-        curl.exe -L --progress-bar $AnythingLLMURL -o $InstallerDest
+        curl.exe -L --ssl-no-revoke --progress-bar $AnythingLLMURL -o $InstallerDest
     }
     
     # Silently extract it directly onto the USB (no install popup!)
