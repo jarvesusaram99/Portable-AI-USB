@@ -1,6 +1,6 @@
 # 🔒 Portable Uncensored AI — Runs Entirely from a USB Drive
 
-A **fully private, portable, uncensored AI assistant** that runs 100% from a USB flash drive. No internet needed after setup. No data leaves the USB. Works on both **Windows** and **Mac**.
+A **fully private, portable, uncensored AI assistant** that runs 100% from a USB flash drive. No internet needed after setup. No data leaves the USB. Works on all three platforms: **Windows**, **Mac**, and **Linux**.
 
 
 ## 📺 Watch the Tutorial
@@ -43,6 +43,12 @@ A **fully private, portable, uncensored AI assistant** that runs 100% from a USB
 - The AnythingLLM window will open automatically
 - Press ENTER in the terminal to safely shut down
 
+### On Linux
+- Run **`./start-linux.sh`** from the terminal on the USB drive
+- First time: It will automatically download the Linux engine (~2 min)
+- The AnythingLLM AppImage window will open automatically
+- Press ENTER in the terminal to safely shut down
+
 ## 🔐 Privacy
 
 - **Zero footprint** — nothing is installed on the host computer
@@ -56,10 +62,13 @@ A **fully private, portable, uncensored AI assistant** that runs 100% from a USB
 USB Drive/
 ├── install.bat             ← Run this first (one time only)
 ├── install-core.ps1        ← Setup script (called by install.bat)
+├── install.sh              ← Linux setup script
 ├── start-windows.bat       ← Windows launcher
 ├── start-mac.command       ← Mac launcher
+├── start-linux.sh          ← Linux launcher
 ├── ollama/                 ← AI engine (Windows)
 ├── ollama_mac/             ← AI engine (Mac, auto-downloaded)
+├── ollama_linux/           ← AI engine (Linux, auto-downloaded)
 ├── models/                 ← AI model files
 ├── anythingllm/            ← Chat interface app
 └── anythingllm_data/       ← Your chats & settings (portable!)
