@@ -141,9 +141,22 @@ echo "  SYSTEM ONLINE: Your AI is running from the USB!  "
 echo "==================================================="
 echo ""
 
+# -----------------------------------------------------------------
+# STEP 4: Launch AnythingLLM
+# -----------------------------------------------------------------
+echo ""
+echo "Starting AI Interface from USB..."
+
+# CRITICAL: We MUST wipe Electron path caches for true portability!
+# This fixes the "JavaScript error" when moving USBs between different Macs.
+[ -f "$STORAGE_DIR/config.json" ] && rm "$STORAGE_DIR/config.json"
+[ -d "$STORAGE_DIR/Cache" ] && rm -rf "$STORAGE_DIR/Cache"
+[ -d "$STORAGE_DIR/Code Cache" ] && rm -rf "$STORAGE_DIR/Code Cache"
+[ -d "$STORAGE_DIR/GPUCache" ] && rm -rf "$STORAGE_DIR/GPUCache"
+
 # Launch AnythingLLM from USB
 echo "Opening AnythingLLM..."
-open --env STORAGE_DIR="$STORAGE_DIR" "$USB_DIR/anythingllm_mac/AnythingLLM.app"
+open -a "$USB_DIR/anythingllm_mac/AnythingLLM.app" --args --user-data-dir="$STORAGE_DIR"
 
 echo ""
 echo "Keep this terminal open while you chat!"

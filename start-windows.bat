@@ -37,7 +37,7 @@ if not exist "%~dp0anythingllm_data\storage" mkdir "%~dp0anythingllm_data\storag
 :: Read the first model from installed-models.txt if it exists
 set "DEFAULT_MODEL=nemomix-local"
 if exist "%~dp0models\installed-models.txt" (
-    for /f "tokens=1 delims=|" %%a in (%~dp0models\installed-models.txt) do (
+    for /f "usebackq tokens=1 delims=|" %%a in ("%~dp0models\installed-models.txt") do (
         set "DEFAULT_MODEL=%%a"
         goto :GotModel
     )
@@ -69,30 +69,11 @@ if "%NEEDS_FIX%"=="1" (
 )
 
 :: -------------------------------------------------------
-:: PROFILE REDIRECT (keep chats on USB)
+:: PROFILE REDIRECT PREVENTED
 :: -------------------------------------------------------
-:: Some desktop builds still resolve to %APPDATA%\anythingllm-desktop.
-:: Redirect that roaming profile back to the USB so chats stay portable.
-if exist "%ROAMING_PROFILE%" (
-    dir /AL "%USERPROFILE%\AppData\Roaming" 2>nul | findstr /I /C:"anythingllm-desktop" >nul
-    if errorlevel 1 (
-        echo Migrating existing AnythingLLM profile from this computer to the USB...
-        robocopy "%ROAMING_PROFILE%" "%ANYTHINGLLM_PROFILE%" /E >nul
-        if exist "%PROFILE_BACKUP%" rmdir /S /Q "%PROFILE_BACKUP%" >nul 2>&1
-        ren "%ROAMING_PROFILE%" "anythingllm-desktop.host-backup" >nul 2>&1
-    )
-)
-if not exist "%ROAMING_PROFILE%" (
-    mklink /J "%ROAMING_PROFILE%" "%ANYTHINGLLM_PROFILE%" >nul
-)
-if not exist "%ROAMING_PROFILE%" (
-    echo.
-    echo ERROR: Could not redirect AnythingLLM profile to the USB drive.
-    echo Close this window, then run it again as the current Windows user.
-    echo.
-    pause
-    exit /b 1
-)
+:: Electron '--user-data-dir' completely overrides profile creation,
+:: ensuring Everything is purely portable on the USB drive.
+
 
 :: -------------------------------------------------------
 :: SHOW INSTALLED MODELS
@@ -100,7 +81,7 @@ if not exist "%ROAMING_PROFILE%" (
 if exist "%~dp0models\installed-models.txt" (
     echo.
     echo Installed models:
-    for /f "tokens=1,2,3 delims=|" %%a in (%~dp0models\installed-models.txt) do (
+    for /f "usebackq tokens=1,2,3 delims=|" %%a in ("%~dp0models\installed-models.txt") do (
         echo   - %%b [%%c]
     )
     echo.
@@ -120,55 +101,31 @@ if exist "%~dp0anythingllm\AnythingLLM.exe" (
     set "APP_PATH=%~dp0anythingllm\AnythingLLM.exe"
     goto LaunchApp
 )
-if exist "%~dp0anythingllm_app\AnythingLLM.exe" (
-    set "APP_PATH=%~dp0anythingllm_app\AnythingLLM.exe"
-    goto LaunchApp
-)
 
 echo.
-echo First time Windows Setup: Extracting AnythingLLM to USB...
-echo Extracting AnythingLLM to USB...
-echo (Fast USB: 1-3 min ^| Slow USB: up to 30-40 min. Do NOT close this window!)
-echo Please wait patiently and do not close this window...
-
-taskkill /F /IM "AnythingLLM.exe" /IM "AnythingLLMDesktop.exe" >nul 2>&1
-
-if exist "%~dp0anythingllm\AnythingLLM_Installer.exe" (
-    start /wait "" "%~dp0anythingllm\AnythingLLM_Installer.exe" /CURRENTUSER /S /D=%~sdp0anythingllm_app
-) else if exist "%~dp0anythingllm\AnythingLLMDesktop.exe" (
-    start /wait "" "%~dp0anythingllm\AnythingLLMDesktop.exe" /CURRENTUSER /S /D=%~sdp0anythingllm_app
-) else (
-    echo.
-    echo ERROR: AnythingLLM was not found on this USB drive!
-    echo Please run install.bat first to download everything.
-    echo.
-    pause
-    exit /b
-)
-
-set WaitCount=0
-:WaitLoop
-if exist "%~dp0anythingllm_app\AnythingLLM.exe" (
-    set "APP_PATH=%~dp0anythingllm_app\AnythingLLM.exe"
-    goto LaunchApp
-)
-if %WaitCount% geq 24 goto LaunchFail
-timeout /t 5 >nul
-set /a WaitCount+=1
-goto WaitLoop
-
-:LaunchFail
+echo ERROR: AnythingLLM was not found in 'anythingllm' folder!
 echo.
-echo ERROR: AnythingLLM failed to extract natively! 
-echo Please cancel the script, manually extract AnythingLLMDesktop.exe, and try again!
+echo Directory Listing for Diagnostic:
+dir "%~dp0anythingllm"
+echo.
+echo Please run install.bat first to download and extract everything.
 echo.
 pause
 exit /b
 
 :LaunchApp
-:: Pass --user-data-dir directly to Electron to FORCE data storage on USB
-:: This is the most reliable method — overrides all internal Electron path logic
-start "" "%APP_PATH%" --user-data-dir="%~dp0anythingllm_data"
+:: CRITICAL: We MUST wipe Electron path caches for true portability!
+:: This fixes the "JavaScript error (ENOENT)" when moving USBs between PCs.
+if exist "%~dp0anythingllm_data\config.json" del /q "%~dp0anythingllm_data\config.json"
+if exist "%~dp0anythingllm_data\Cache" rmdir /s /q "%~dp0anythingllm_data\Cache"
+if exist "%~dp0anythingllm_data\Code Cache" rmdir /s /q "%~dp0anythingllm_data\Code Cache"
+if exist "%~dp0anythingllm_data\GPUCache" rmdir /s /q "%~dp0anythingllm_data\GPUCache"
+
+:: CRITICAL: We MUST pushd into the app directory for the portable app to find its own resources!
+pushd "%~dp0anythingllm"
+:: Pass --user-data-dir 
+start "" "AnythingLLM.exe" --user-data-dir="%~dp0anythingllm_data"
+popd
 
 :Running
 echo.

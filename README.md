@@ -38,16 +38,19 @@ During installation, you'll choose which model(s) to download:
 1. **Download this repo** and copy ALL files to your USB drive
 2. **Double-click `install.bat`** on the USB drive
 3. **Choose your model(s)** from the interactive menu
-4. Wait for downloads to complete (time depends on model size & internet speed)
-5. **Done!** Your portable AI is ready to use
+4. **Interactive AnythingLLM Setup**:
+   - The AnythingLLM installer will open automatically.
+   - **IMPORTANT**: When asked for the "Install Location", click **Browse** and select the `anythingllm` folder on your USB drive.
+   - Wait for it to finish, then close the installer window.
+5. **Done!** Your portable AI is ready to use.
 
 ### ⚠️ If a Model Download Fails
 
 The installer automatically retries failed downloads. If it still fails:
 
-1. **Download the model manually** from the HuggingFace link shown in the error
-2. **Place the .gguf file** into the `models\` folder on your USB
-3. **Re-run `install.bat`** — it will detect the file and skip the download
+1. **Download the model manually** from the HuggingFace resolved link shown in the console error.
+2. **Place the .gguf file** into the `models\` folder on your USB.
+3. **Re-run `install.bat`** — it will detect the file and skip the download.
 
 ### 🔄 Adding More Models Later
 
@@ -60,24 +63,25 @@ Want a model not on the list? During install, choose option **C** and paste any 
 ## ▶️ How to Use
 
 ### On Windows
-- Double-click **`start-windows.bat`** on the USB drive
-- The AnythingLLM chat window will open automatically
-- **Switch between models** in AnythingLLM: Settings → LLM → select your model
-- Keep the black terminal window open while chatting
-- Press any key in the terminal to safely shut down
+- Double-click **`start-windows.bat`** on the USB drive.
+- **Improved Portability**: The launcher now automatically clears old path caches. This allows you to move between different computers without "JavaScript errors."
+- The AnythingLLM chat window will open automatically.
+- **Switch between models** in AnythingLLM: Settings → LLM → select your model.
+- Keep the black terminal window open while chatting.
+- Press any key in the terminal to safely shut down.
 
 ### On Mac
-- Double-click **`start-mac.command`** on the USB drive  
-- First time: It will automatically download the Mac engine (~2 min)
-- The AnythingLLM window will open automatically
-- Press ENTER in the terminal to safely shut down
+- Double-click **`start-mac.command`** on the USB drive.
+- First time: It will automatically download the Mac engine (~2 min).
+- The AnythingLLM window will open automatically.
+- Press ENTER in the terminal to safely shut down.
 
 ## 🔐 Privacy
 
-- **All chats & settings stay on the USB** — never saved to the host PC
-- A shortcut (junction link) is created in `AppData` on first run to redirect AnythingLLM's data path to the USB — this is the only trace left on the host computer
-- Works completely offline after initial setup
-- No telemetry, no cloud, no tracking
+- **All chats & settings stay on the USB** — never saved to the host PC.
+- No registry keys or local files are left behind.
+- Works completely offline after initial setup.
+- No telemetry, no cloud, no tracking.
 
 ## 📁 USB Drive Structure (After Setup)
 
@@ -85,17 +89,15 @@ Want a model not on the list? During install, choose option **C** and paste any 
 USB Drive/
 ├── install.bat             ← Run this first (one time only)
 ├── install-core.ps1        ← Setup script (called by install.bat)
-├── start-windows.bat       ← Windows launcher
+├── start-windows.bat       ← Windows launcher (with auto-cache clearing)
 ├── start-mac.command       ← Mac launcher
 ├── ollama/                 ← AI engine (Windows)
-├── ollama_mac/             ← AI engine (Mac, auto-downloaded)
 ├── models/                 ← AI model files (.gguf) & configs
 │   ├── installed-models.txt    ← List of installed models
-│   ├── Modelfile-*             ← Per-model configurations
 │   └── *.gguf                  ← Model weights
-├── anythingllm/            ← Chat interface installer
-├── anythingllm_app/        ← Chat interface app (extracted on first run)
-└── anythingllm_data/       ← Your chats & settings (portable!)
+├── anythingllm/            ← Your AI Interface (installed here)
+├── installer_data/         ← Temporary installer files (auto-cleaned)
+└── anythingllm_data/       ← Your chats & settings (100% portable!)
 ```
 
 ## 💾 USB Size Guide
@@ -109,16 +111,11 @@ USB Drive/
 
 ## ⚠️ Important Notes
 
-- **First launch ever** — AnythingLLM needs to be extracted to the USB. This takes:
-  - ⚡ Fast USB (USB 3.0+): **8–10 minutes**
-  - 🐢 Slow USB (USB 2.0): **up to 40–50 minutes** — do NOT close the window!
-- **First launch on a new computer** after extraction may take 30–60 seconds to load
-- The AI runs on your **CPU** — responses take 10–30 seconds depending on hardware
-- 12B models (NemoMix) need **at least 8 GB RAM** for good performance
-- 7-8B models need **at least 6 GB RAM**
-- 3B models run on almost anything with **4 GB RAM**
-- If you have a **GPU**, responses will be much faster
-- Always **safely eject** the USB before unplugging
+- **Manual Path Selection**: When installing AnythingLLM, you must manually select the `anythingllm` folder on the USB to keep it portable.
+- **Moving between PCs**: If you see a "JavaScript Error" on a new PC, just close it and run `start-windows.bat` again. The script will automatically wipe the old PC's cached paths and fix the run.
+- **Performance**: The AI runs on your **CPU** — responses take 10–30 seconds depending on hardware.
+- **RAM**: 12B models (NemoMix) need **at least 8 GB RAM**. 7B models need **at least 6 GB RAM**.
+- Always **safely eject** the USB before unplugging.
 
 ## 📜 License
 
