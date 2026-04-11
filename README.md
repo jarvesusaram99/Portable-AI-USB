@@ -1,6 +1,6 @@
 # 🔒 Portable Uncensored AI — Runs Entirely from a USB Drive
 
-A **fully private, portable, uncensored AI assistant** that runs 100% from a USB flash drive. No internet needed after setup. No data leaves the USB. Works on both **Windows** and **Mac**.
+A **fully private, portable, uncensored AI assistant** that runs 100% from a USB flash drive. No internet needed after setup. No data leaves the USB. Works on **Windows**, **Mac**, and **Linux**.
 
 **Now with multi-model support!** Choose from 6 curated AI models or bring your own.
 
@@ -23,20 +23,20 @@ During installation, you'll choose which model(s) to download:
 | 6 | **Phi-3.5 Mini 3.8B** | ~2.2 GB | 🔒 STANDARD | Lightweight — good reasoning |
 | C | **Custom GGUF** | Varies | 🎨 CUSTOM | Bring your own HuggingFace model |
 
-> **🔓 UNCENSORED** = No content filters, answers everything  
+> **🔓 UNCENSORED** = No content filters, answers everything
 > **🔒 STANDARD** = Normal safety guidelines apply
 
 ## 🚀 Setup (One Time Only)
 
 ### What You Need
 - A USB flash drive with **at least 16 GB** of free space (32 GB recommended for multiple models)
-- Format the USB as **exFAT** (works on both Windows and Mac)
+- If unsure, format the USB as **exFAT** (works on Windows, Mac and Linux)
 - An internet connection for the initial download
 
 ### Steps
 
 1. **Download this repo** and copy ALL files to your USB drive
-2. **Double-click `install.bat`** on the USB drive
+2. **Double-click `install-windows.bat`/`install-linux.sh`** on the USB drive
 3. **Choose your model(s)** from the interactive menu
 4. **Interactive AnythingLLM Setup**:
    - The AnythingLLM installer will open automatically.
@@ -76,6 +76,14 @@ Want a model not on the list? During install, choose option **C** and paste any 
 - The AnythingLLM window will open automatically.
 - Press ENTER in the terminal to safely shut down.
 
+### On Windows
+- Double-click **`linux/start-linux.sh`** on the USB drive.
+- First time: It will automatically download the Ollama engine (~2 min).
+- The AnythingLLM chat window will open automatically.
+- **Switch between models** in AnythingLLM: Settings → LLM → select your model.
+- Keep the black terminal window open while chatting.
+- Press ENTER in the terminal to safely shut down.
+
 ## 🔐 Privacy
 
 - **All chats & settings stay on the USB** — never saved to the host PC.
@@ -91,6 +99,7 @@ USB Drive/
 ├── install-core.ps1        ← Setup script (called by install.bat)
 ├── start-windows.bat       ← Windows launcher (with auto-cache clearing)
 ├── start-mac.command       ← Mac launcher
+├── linux/start-linux.sh    ← Linux launcher
 ├── ollama/                 ← AI engine (Windows)
 ├── models/                 ← AI model files (.gguf) & configs
 │   ├── installed-models.txt    ← List of installed models

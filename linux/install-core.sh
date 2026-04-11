@@ -23,7 +23,7 @@ if [[ -n "${1:-}" && -d "$1" ]]; then
     USB_DIR="$(cd "$1" && pwd)"
     echo -e "${YELLOW}Target directory overridden to: ${USB_DIR}${NC}"
 else
-    USB_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+    USB_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 fi
 
 # ── Dependency check ──────────────────────────────────────────
@@ -614,7 +614,7 @@ if (( ${#DOWNLOAD_ERRORS[@]} > 0 )); then
         echo -e "${RED}    ! ${err}${NC}"
     done
     echo ""
-    echo -e "${YELLOW}  You can re-run install.sh to retry failed downloads.${NC}"
+    echo -e "${YELLOW}  You can re-run install-linux.sh to retry failed downloads.${NC}"
 else
     echo -e "${GREEN}   SETUP COMPLETE! YOUR PORTABLE AI IS READY!${NC}"
     echo -e "${CYAN}==========================================================${NC}"

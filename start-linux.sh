@@ -90,13 +90,13 @@ fi
 # -------------------------------------------------------
 if [[ ! -x "$OLLAMA_BIN" ]]; then
     echo -e "${RED}ERROR: Ollama binary not found at: $OLLAMA_BIN${NC}"
-    echo "Please run install.sh first."
+    echo "Please run install-linux.sh first."
     exit 1
 fi
 
 if [[ ! -f "$APPIMAGE" ]]; then
     echo -e "${RED}ERROR: AnythingLLM AppImage not found at: $APPIMAGE${NC}"
-    echo "Please run install.sh first."
+    echo "Please run install-linux.sh first."
     exit 1
 fi
 

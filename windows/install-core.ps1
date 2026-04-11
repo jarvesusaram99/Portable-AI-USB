@@ -6,7 +6,7 @@
 # ================================================================
 
 $ErrorActionPreference = "Continue"
-$USB_Drive = Split-Path -Parent $MyInvocation.MyCommand.Path
+$USB_Drive = Split-Path -Parent (Split-Path -Parent $MyInvocation.MyCommand.Path)
 
 # -----------------------------------------------------------------
 # MODEL CATALOG (All presets use Q4_K_M quantization from bartowski)
