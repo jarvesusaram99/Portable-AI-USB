@@ -703,15 +703,17 @@ elif (( WARN_COUNT > 0 )); then
     echo ""
     if [[ "$TARGET_MOUNT" != "$SCRIPT_DIR" ]]; then
         echo -e "  ${YELLOW}Copying setup scripts to USB drive...${NC}"
-        cp "$SCRIPT_DIR/install.sh" "$TARGET_MOUNT/"
-        cp "$SCRIPT_DIR/install-core.sh" "$TARGET_MOUNT/"
-        cp "$SCRIPT_DIR/preflight-check.sh" "$TARGET_MOUNT/"
-        cp "$SCRIPT_DIR/start-linux.sh" "$TARGET_MOUNT/"
+        mkdir -p "$TARGET_MOUNT/linux"
+        cp "$SCRIPT_DIR/../install-linux.sh" "$TARGET_MOUNT/"
+        cp "$SCRIPT_DIR/../start-linux.sh" "$TARGET_MOUNT/"
+        cp "$SCRIPT_DIR/install-core.sh" "$TARGET_MOUNT/linux/"
+        cp "$SCRIPT_DIR/preflight-check.sh" "$TARGET_MOUNT/linux/"
         chmod +x "$TARGET_MOUNT/"*.sh 2>/dev/null || true
+        chmod +x "$TARGET_MOUNT/linux/"*.sh 2>/dev/null || true
     fi
     echo -e "  ${GREEN}Launching installer on: ${TARGET_MOUNT}...${NC}"
     sleep 1
-    bash "$TARGET_MOUNT/install-core.sh" "$TARGET_MOUNT"
+    bash "$TARGET_MOUNT/linux/install-core.sh" "$TARGET_MOUNT"
   else
     echo ""
     echo -e "  ${YELLOW}Cancelled. Re-run preflight-check.sh when ready.${NC}"
@@ -726,15 +728,17 @@ else
     echo ""
     if [[ "$TARGET_MOUNT" != "$SCRIPT_DIR" ]]; then
         echo -e "  ${YELLOW}Copying setup scripts to USB drive...${NC}"
-        cp "$SCRIPT_DIR/install.sh" "$TARGET_MOUNT/"
-        cp "$SCRIPT_DIR/install-core.sh" "$TARGET_MOUNT/"
-        cp "$SCRIPT_DIR/preflight-check.sh" "$TARGET_MOUNT/"
-        cp "$SCRIPT_DIR/start-linux.sh" "$TARGET_MOUNT/"
+        mkdir -p "$TARGET_MOUNT/linux"
+        cp "$SCRIPT_DIR/../install-linux.sh" "$TARGET_MOUNT/"
+        cp "$SCRIPT_DIR/../start-linux.sh" "$TARGET_MOUNT/"
+        cp "$SCRIPT_DIR/install-core.sh" "$TARGET_MOUNT/linux/"
+        cp "$SCRIPT_DIR/preflight-check.sh" "$TARGET_MOUNT/linux/"
         chmod +x "$TARGET_MOUNT/"*.sh 2>/dev/null || true
+        chmod +x "$TARGET_MOUNT/linux/"*.sh 2>/dev/null || true
     fi
     echo -e "  ${GREEN}Launching installer on: ${TARGET_MOUNT}...${NC}"
     sleep 1
-    bash "$TARGET_MOUNT/install-core.sh" "$TARGET_MOUNT"
+    bash "$TARGET_MOUNT/linux/install-core.sh" "$TARGET_MOUNT"
   else
     echo ""
     echo -e "  ${DGRAY}No problem — run install-core.sh whenever you're ready.${NC}"
